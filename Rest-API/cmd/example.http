@@ -1,0 +1,25 @@
+###
+
+GET http://127.0.0.1:8080/
+
+###
+
+PUT http://127.0.0.1:8080/
+content-type: application/json
+
+{
+"first": 5,
+"second": 10
+}
+
+### 
+
+GET http://127.0.0.1:8080/first
+
+###
+
+GET http://127.0.0.1:8080/second
+
+###
+
+GET http://127.0.0.1:8080/summa
