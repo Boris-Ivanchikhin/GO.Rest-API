@@ -1,5 +1,5 @@
-# GO.Rest-API
-# Programming in the Go language. Rest API Examples
+### GO.Rest-API
+### Programming in the Go language. Rest API Examples
 
 По мотивам курса УЦ Специалист “Программирование на языке GO. Проектирование REST API”.
 Пример реализации Rest-API:
@@ -10,5 +10,5 @@
 
 При написании примера предпочтения отдавались в пользу простым/небольшим пакетам.
 
-P.S.
+### P.S.
 Использованы материалы youtube канала "The Art of Development" (https://www.youtube.com/c/TheArtofDevelopment).
