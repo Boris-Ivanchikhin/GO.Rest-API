@@ -10,7 +10,7 @@
   - PATCH /users/:id  -> partially update user: 204/200, 404, 400, 500;
   - DELETE /users/:id -> delete user by id: 204, 404, 400.
 
-===
+***
 
 По мотивам курса [Go (Golang) для веб - разработки "УЦ Специалист"](https://www.specialist.ru/track/t-go "www.specialist.ru").
 Rest-API user service:
@@ -20,6 +20,6 @@ Rest-API user service:
   - синглтон реализован на базе модуля sync;
   - также реализовано чтение конфигурации приложения из файла config.yml (модуль \internal\config\config.go). Для чего используется пакет [cleanenv](https://github.com/ilyakaznacheev/cleanenv "github.com").
 
-===
+***
 
 Также использованы материалы канала [The Art of Development](https://www.youtube.com/c/TheArtofDevelopment "youtube").
