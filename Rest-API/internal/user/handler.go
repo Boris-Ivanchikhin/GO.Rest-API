@@ -2,145 +2,83 @@ package user
 
 import (
 	"RestAPI/internal/handlers"
-	"RestAPI/pkg/datasource"
 	"RestAPI/pkg/logging"
-	"encoding/json"
-	"fmt"
-	"mime"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 )
 
-// подсказка для себя, т.е. check на соотвктсвие структуры handler интерфейсу Handler
+// подсказка для себя, т.е. check на соответствие структуры handler интерфейсу Handler
 var _ handlers.Handler = &handler{}
 
+// структура хранения логгера и сервиса
 type handler struct {
 	logger *logging.Logger
-	source *datasource.Source
 }
 
-func NewHandler(logger *logging.Logger, source *datasource.Source) handlers.Handler {
+func NewHandler(logger *logging.Logger) handlers.Handler {
 	return &handler{
 		logger: logger,
-		source: source,
 	}
 }
 
 const (
-	rootURL  = "/"
-	userURL1 = "/first"
-	userURL2 = "/second"
-	userURL3 = "/summa"
+	usersURL = "/users"
+	userURL  = "/users/:uuid"
 )
 
-// Handlers
-func (h *handler) GetIndex(w http.ResponseWriter, r *http.Request) {
+func (h *handler) GetList(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
-	value, err := json.Marshal(h.source)
-	if err != nil {
-		h.logger.Error(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	w.WriteHeader(http.StatusOK) // 200
+	//w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+	//w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte("this is list of users"))
 
-	// JSON в качестве Content-Type.
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(value)
-
-	h.logger.Debug("JSON data transmitted")
 }
 
-func (h *handler) SetValues(w http.ResponseWriter, r *http.Request) {
+func (h *handler) CreateUser(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
-	type Response struct {
-		Summa int `json:"summa"`
-	}
-
-	// JSON в качестве Content-Type.
-	contentType := r.Header.Get("Content-Type")
-	mediatype, _, err := mime.ParseMediaType(contentType)
-	if err != nil {
-		h.logger.Error(err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	if mediatype != "application/json" {
-		http.Error(w, "expect application/json Content-Type", http.StatusUnsupportedMediaType)
-		return
-	}
-
-	dec := json.NewDecoder(r.Body)
-	dec.DisallowUnknownFields()
-
-	var src datasource.Source
-
-	if err := dec.Decode(&src); err != nil {
-		h.logger.Error(err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	h.source.SetFirst(src.First)
-	h.source.SetSecond(src.Second)
-
-	// Ответ {"Summa" : число}
-	resp := &Response{h.source.Summa}
-	value, err := json.Marshal(resp)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK) //200
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(value)
-
-	h.logger.Debug("data was successfully updated")
+	w.WriteHeader(http.StatusCreated) // 201
+	//w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+	w.Write([]byte("this is creating user"))
 }
 
-func (h *handler) GetFirst(w http.ResponseWriter, r *http.Request) {
+func (h *handler) GetUserByUUID(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
-	fmt.Fprintf(w, "First is: %d\n", h.source.First)
+	w.WriteHeader(http.StatusOK) // 200
+	//w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+	w.Write([]byte("this is user by uuid"))
+}
 
+func (h *handler) UpdateUser(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+
+	w.WriteHeader(http.StatusNoContent) // 204
+	//w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+	w.Write([]byte("this is update user"))
+}
+
+func (h *handler) PartiallyUpdateUser(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+
+	w.WriteHeader(http.StatusNoContent) // 204
+	//w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
+	w.Write([]byte("this is partially update  user"))
+}
+
+func (h *handler) DeleteUser(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+
+	w.WriteHeader(http.StatusNoContent) // 204
 	w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	//w.Write([]byte("значение first"))
-}
-
-func (h *handler) GetSecond(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Fprintf(w, "Second is: %d\n", h.source.Second)
-
-	w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	//w.Write([]byte("значение second"))
-}
-
-func (h *handler) GetResult(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Fprintf(w, "Result is: %d\n", h.source.Summa)
-
-	w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
-	//w.Write([]byte("значение result"))
+	w.Write([]byte("this is delete user"))
 }
 
 func (h *handler) Register(router *httprouter.Router) {
 
-	// оригинальный -> router.GET("/", h.GetIndex)
-	// *** вариант совместимости с дефолтным http-роутером
-	router.HandlerFunc(http.MethodGet, rootURL, h.GetIndex)  // Показать JSON всего выражения
-	router.HandlerFunc(http.MethodPut, rootURL, h.SetValues) // Установить first и second используя JSON
-
-	// оригинальный -> router.GET(userURL1, h.GetFirst)
-	router.HandlerFunc(http.MethodGet, userURL1, h.GetFirst)
-
-	// оригинальный -> router.GET(userURL2, h.GetSecond)
-	router.HandlerFunc(http.MethodGet, userURL2, h.GetSecond)
-
-	// оригинальный -> router.GET(userURL3, h.GetResult) // результат
-	router.HandlerFunc(http.MethodGet, userURL3, h.GetResult)
+	// usersURL
+	router.GET(usersURL, h.GetList)
+	router.POST(usersURL, h.CreateUser)
+	// userURL
+	router.GET(userURL, h.GetUserByUUID)
+	router.PUT(userURL, h.UpdateUser)
+	router.PATCH(userURL, h.PartiallyUpdateUser)
+	router.DELETE(userURL, h.DeleteUser)
 }

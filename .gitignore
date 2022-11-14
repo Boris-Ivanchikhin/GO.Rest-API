@@ -13,3 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+/.vscode
+/.DS_Store
+/logs
+/Rest-API/.vscode
+/Rest-API/.DS_Store
+/Rest-API/logs
+/Rest-API/cmd/logs

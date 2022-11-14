@@ -4,7 +4,7 @@ import (
 	"RestAPI/pkg/logging"
 	"sync"
 
-	// *** ilyakaznacheev / cleanenv
+	// * ilyakaznacheev / cleanenv
 	// This is a simple configuration reading tool. It just does the following:
 	// -> reads and parses configuration structure from the file
 	// -> reads and overwrites configuration structure from environment variables
@@ -20,6 +20,16 @@ type Config struct {
 		BindIP string `yaml:"bind_ip" env-default:"127.0.0.1"`
 		Port   string `yaml:"port" env-default:"8080"`
 	} `yaml:"listen"`
+
+	MongoDB struct {
+		Host       string `json:"host"`
+		Port       string `json:"port"`
+		Database   string `json:"database"`
+		AuthDB     string `json:"auth_db"`
+		Username   string `json:"username"`
+		Password   string `json:"password"`
+		Collection string `json:"collection"`
+	} `json:"mongodb"`
 }
 
 var instance *Config

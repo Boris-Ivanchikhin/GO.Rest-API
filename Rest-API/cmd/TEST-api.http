@@ -1,0 +1,41 @@
+@host=127.0.0.1
+@port=8080
+@usersURL = /users
+
+### useRS
+
+GET http://{{host}}:{{port}}{{usersURL}}
+content-type: application/json
+
+### useR
+
+POST http://{{host}}:{{port}}{{usersURL}}
+content-type: application/json
+
+{}
+
+###
+
+GET http://{{host}}:{{port}}{{usersURL}}/1
+content-type: application/json
+
+###
+
+PUT http://{{host}}:{{port}}{{usersURL}}/1
+content-type: application/json
+
+{}
+
+### 
+
+PATCH http://{{host}}:{{port}}{{usersURL}}/1
+content-type: application/json
+
+{}
+
+### 
+
+DELETE http://{{host}}:{{port}}/{{usersURL}}/1
+content-type: application/json
+
+{}

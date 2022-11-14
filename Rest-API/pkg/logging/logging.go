@@ -11,11 +11,11 @@ import (
 )
 
 // В любой Writer можно отправлять любое количество уровней логирования LogLevels
-// *** >
+// *>
 // kafka  -> info, debug
 // file	  -> error, trace
 // strout -> warning, critical
-// *** >
+// *>
 type writerHook struct {
 	Writer    []io.Writer
 	LogLevels []logrus.Level
@@ -40,7 +40,7 @@ func (hook *writerHook) Levels() []logrus.Level {
 	return hook.LogLevels
 }
 
-// Обёртка для кокретного логгера
+// Обёртка для конкретного логгера
 var e *logrus.Entry
 
 type Logger struct {
