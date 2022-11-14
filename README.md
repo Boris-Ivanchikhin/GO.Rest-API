@@ -1,7 +1,7 @@
 ### GO.Rest-API
 #### Programming in the Go language. Rest API user service
 
-===
+***
 
   - GET  /users       -> list of users: 200, 404, 500;
   - GET  /users/:id   -> user by id: 200, 404, 500;
@@ -12,13 +12,13 @@
 
 ===
 
-По мотивам курса [Go (Golang) для веб - разработки "УЦ Специалист"](https://www.specialist.ru/track/t-go).
+По мотивам курса [Go (Golang) для веб - разработки "УЦ Специалист"](https://www.specialist.ru/track/t-go "www.specialist.ru").
 Rest-API user service:
-  - использован [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver#mongodb-go-driver);
-  - в примере используется HTTP router [Джулиана Шмидта](https://github.com/julienschmidt/httprouter "HTTP router");
-  - логгирование реализовано на базе [logrus](pkg\logging\logging.go "модуль");
-  - синглтон взят из модуля sync (например, в модуле pkg\datasource\datasource.go);
-  - также реализовано чтение конфигурации приложения из файла config.yml (модуль \internal\config\config.go). Для чего используется пакет [cleanenv](https://github.com/ilyakaznacheev/cleanenv "cleanenv").
+  - использован [MongoDB Go Driver](https://github.com/mongodb/mongo-go-driver#mongodb-go-driver "github.com");
+  - в примере используется HTTP router [Джулиана Шмидта](https://github.com/julienschmidt/httprouter "github.com");
+  - применён логгер [logrus](https://github.com/sirupsen/logrus "github.com");
+  - синглтон реализован на базе модуля sync;
+  - также реализовано чтение конфигурации приложения из файла config.yml (модуль \internal\config\config.go). Для чего используется пакет [cleanenv](https://github.com/ilyakaznacheev/cleanenv "github.com").
 
 ===
 
